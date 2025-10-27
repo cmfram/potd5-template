@@ -6,37 +6,35 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Upsorn Praphamontripong">
-  <meta name="description" content="Maintenance request form, a small/toy web app for ISP homework assignment, used by CS 3250 (Software Testing)">
-  <meta name="keywords" content="CS 3250, Upsorn, Praphamontripong, Software Testing">
+  <meta name="description" content="Maintenance request form">
+  <meta name="keywords" content="CS 4750, Database">
   <link rel="icon" href="https://www.cs.virginia.edu/~up3f/cs3250/images/st-icon.png" type="image/png" />  
   
   <title>Maintenance Services</title>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">  
   <link rel="stylesheet" href="maintenance-system.css">  
 </head>
 
 <body>  
 <div class="container">
 
-  <!-- Page header -->
   <div class="row g-3 mt-2">
     <div class="col">
       <h2>Maintenance Request</h2>
     </div>  
   </div>
 
-  <!-- Flash messages -->
   <?php if (!empty($alert)): ?>
     <div class="alert alert-success"><?= htmlspecialchars($alert) ?></div>
   <?php endif; ?>
   <?php if (!empty($error)): ?>
     <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
   <?php endif; ?>
-  
+
   <!-- FORM -->
-  <form method="post" action="request.php" onsubmit="return validateInput()">
-    <input type="hidden" name="id" value="<?= htmlspecialchars($val['id']) ?>">
+  <form method="post" action="request.php">
+    <input type="hidden" name="reqId" value="<?= htmlspecialchars($val['reqId']) ?>">
 
     <table style="width:98%">
       <tr>
@@ -86,12 +84,9 @@
             Requested Priority:
             <select class='form-select' id='priority_option' name='priority_option' required>
               <option value="" <?= $val['priority_option']===''?'selected':'' ?> disabled>Select priority</option>
-              <option value='high'   <?= $val['priority_option']==='high'?'selected':'' ?>>
-                High - Must be done within 24 hours</option>
-              <option value='medium' <?= $val['priority_option']==='medium'?'selected':'' ?>>
-                Medium - Within a week</option>
-              <option value='low'    <?= $val['priority_option']==='low'?'selected':'' ?>>
-                Low - When you get a chance</option>
+              <option value='high'   <?= $val['priority_option']==='high'?'selected':'' ?>>High - Must be done within 24 hours</option>
+              <option value='medium' <?= $val['priority_option']==='medium'?'selected':'' ?>>Medium - Within a week</option>
+              <option value='low'    <?= $val['priority_option']==='low'?'selected':'' ?>>Low - When you get a chance</option>
             </select>
           </div>
         </td>
@@ -100,12 +95,10 @@
 
     <div class="row g-3 mx-auto">    
       <div class="col-4 d-grid">
-        <input type="submit" value="Add" id="addBtn" name="addBtn" class="btn btn-dark"
-               title="Submit a maintenance request" />                  
+        <input type="submit" value="Add" id="addBtn" name="addBtn" class="btn btn-dark" />                  
       </div>	    
       <div class="col-4 d-grid">
-        <input type="submit" value="Confirm update" id="cofmBtn" name="cofmBtn" class="btn btn-primary"
-               title="Update a maintenance request" />                  
+        <input type="submit" value="Confirm update" id="cofmBtn" name="cofmBtn" class="btn btn-primary" />                  
       </div>	    
       <div class="col-4 d-grid">
         <input type="reset" value="Clear form" name="clearBtn" id="clearBtn" class="btn btn-secondary" />
@@ -117,7 +110,6 @@
 
 <hr/>
 
-<!-- LIST -->
 <div class="container">
   <h3>List of requests</h3>
   <div class="row justify-content-center">  
@@ -134,35 +126,33 @@
           <th width="10%"><b>Delete?</b></th>
         </tr>
       </thead>
-
       <tbody>
         <?php foreach ($rows as $r): ?>
           <tr>
-            <td><?= htmlspecialchars($r['id']) ?></td>
-            <td><?= htmlspecialchars($r['req_date']) ?></td>
-            <td><?= htmlspecialchars($r['room']) ?></td>
-            <td><?= htmlspecialchars($r['requested_by']) ?></td>
-            <td><?= htmlspecialchars($r['description']) ?></td>
-            <td><?= htmlspecialchars($r['priority']) ?></td>
+            <td><?= htmlspecialchars($r['reqId']) ?></td>
+            <td><?= htmlspecialchars($r['reqDate']) ?></td>
+            <td><?= htmlspecialchars($r['roomNumber']) ?></td>
+            <td><?= htmlspecialchars($r['reqBy']) ?></td>
+            <td><?= htmlspecialchars($r['repairDesc']) ?></td>
+            <td><?= htmlspecialchars($r['reqPriority']) ?></td>
             <td>
               <a class="btn btn-primary btn-sm"
-                 href="request.php?action=start_update&id=<?= urlencode($r['id']) ?>">Update</a>
+                 href="request.php?action=start_update&id=<?= urlencode($r['reqId']) ?>">Update</a>
             </td>
             <td>
               <a class="btn btn-danger btn-sm"
-                 href="request.php?action=delete&id=<?= urlencode($r['id']) ?>"
-                 onclick="return confirm('Delete request #<?= htmlspecialchars($r['id']) ?>?');">Delete</a>
+                 href="request.php?action=delete&id=<?= urlencode($r['reqId']) ?>"
+                 onclick="return confirm('Delete request #<?= htmlspecialchars($r['reqId']) ?>?');">Delete</a>
             </td>
           </tr>
         <?php endforeach; ?>
       </tbody>
-
     </table>
   </div>   
 </div>
 
 <br/><br/>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
