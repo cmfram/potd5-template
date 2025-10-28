@@ -2,7 +2,7 @@
 // connect-db.php — local XAMPP
 $host     = 'localhost';
 $dbname   = 'mvn5yd_d';
-$username = 'root';
+$username = '';
 $password = '';
 
 $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
